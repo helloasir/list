@@ -7,41 +7,38 @@ import DetailsPage from "./components/DetailsPage";
 function App() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+  const [totalPages, setTotalPages] = useState(1);
 
+  // Fetching the data from the public folder (websites.json)
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch("/webs.json");
       const jsonData = await response.json();
       setData(jsonData);
+      setTotalPages(Math.ceil(jsonData.length / 10));
     };
-
     fetchData();
   }, []);
 
-  const totalPages = Math.ceil(data.length / rowsPerPage);
+  // Paginate function
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const handlePaginate = (pageNumber) => {
-    if (pageNumber >= 1 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber);
-    }
-  };
+  // Slice the data for the current page
+  const indexOfLast = currentPage * 10;
+  const indexOfFirst = indexOfLast - 10;
+  const currentData = data.slice(indexOfFirst, indexOfLast);
 
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage
-              data={data.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              paginate={handlePaginate}
-            />
-          }
+        <Route 
+          path="/" 
+          element={<HomePage data={currentData} currentPage={currentPage} totalPages={totalPages} paginate={paginate} />} 
         />
-        <Route path="/domain/:domainName" element={<DetailsPage data={data} />} />
+        <Route 
+          path="/domain/:domainName" 
+          element={<DetailsPage data={data} />} 
+        />
       </Routes>
     </Router>
   );

@@ -1,56 +1,80 @@
 // src/components/HomePage.js
 import React from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+import Pagination from "./Pagination";
+
+// Styled components for layout and table styling
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f7f9fc;
+`;
+
+const Content = styled.div`
+  width: 90%;
+  max-width: 900px;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+`;
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+`;
+
+const TableHeader = styled.th`
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+  text-align: left;
+`;
+
+const TableData = styled.td`
+  padding: 12px;
+  background-color: #f9f9f9;
+  color: #555;
+`;
 
 function HomePage({ data, currentPage, totalPages, paginate }) {
-  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-
   return (
-    <div className="HomePage">
-      <h1>Websites List</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Domain</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row) => (
-            <tr key={row.Rank}>
-              <td>{row.Rank}</td>
-              <td>
-                <Link to={`/domain/${row.Domain}`}>{row.Domain}</Link>
-              </td>
+    <Container>
+      <Content>
+        <h1>Website Rankings</h1>
+        <Table>
+          <thead>
+            <tr>
+              <TableHeader>Rank</TableHeader>
+              <TableHeader>Domain</TableHeader>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map((row, index) => (
+              <tr key={index}>
+                <TableData>{row.Rank}</TableData>
+                <TableData>
+                  <Link to={`/domain/${row.Domain}`}>{row.Domain}</Link>
+                </TableData>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
 
-      <div className="pagination">
-        <button
-          onClick={() => paginate(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        {pageNumbers.map((number) => (
-          <button
-            key={number}
-            onClick={() => paginate(number)}
-            className={number === currentPage ? "active" : ""}
-          >
-            {number}
-          </button>
-        ))}
-        <button
-          onClick={() => paginate(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-      </div>
-    </div>
+        {/* Pagination Component */}
+        <Pagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          paginate={paginate} 
+        />
+      </Content>
+    </Container>
   );
 }
 
