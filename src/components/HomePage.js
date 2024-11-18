@@ -1,34 +1,8 @@
 // src/components/HomePage.js
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
 
 function HomePage({ data, paginate, totalPages, currentPage }) {
-  const [visiblePageLinks, setVisiblePageLinks] = useState([]);
-
-  useEffect(() => {
-    const links = [];
-    let startPage = currentPage - 2;
-    let endPage = currentPage + 2;
-
-    // Ensure the links are within the valid page range
-    if (startPage < 1) {
-      startPage = 1;
-      endPage = 5;
-    }
-    if (endPage > totalPages) {
-      endPage = totalPages;
-      startPage = totalPages - 4;
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      links.push(i);
-    }
-
-    setVisiblePageLinks(links);
-  }, [currentPage, totalPages]);
-
   return (
     <div className="HomePage">
       <h1>Websites List</h1>
@@ -37,9 +11,9 @@ function HomePage({ data, paginate, totalPages, currentPage }) {
           <tr>
             <th>Rank</th>
             <th>Domain</th>
-            {/* <th>data1</th>
+            <th>data1</th>
             <th>data2</th>
-            <th>data3</th> */}
+            <th>data3</th>
           </tr>
         </thead>
         <tbody>
@@ -49,38 +23,41 @@ function HomePage({ data, paginate, totalPages, currentPage }) {
               <td>
                 <Link to={`/domain/${row.Domain}`}>{row.Domain}</Link>
               </td>
-              {/* <td>{row.data1}</td>
+              <td>{row.data1}</td>
               <td>{row.data2}</td>
-              <td>{row.data3}</td> */}
+              <td>{row.data3}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
       <div className="pagination">
-        <Button
+        <button
           onClick={() => paginate(currentPage - 1)}
           disabled={currentPage === 1}
+          className="pagination-button"
         >
           Previous
-        </Button>
+        </button>
 
-        {visiblePageLinks.map((pageNumber) => (
-          <Button
+        {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+          <button
             key={pageNumber}
             onClick={() => paginate(pageNumber)}
             disabled={currentPage === pageNumber}
+            className="pagination-button"
           >
             {pageNumber}
-          </Button>
+          </button>
         ))}
 
-        <Button
+        <button
           onClick={() => paginate(currentPage + 1)}
           disabled={currentPage === totalPages}
+          className="pagination-button"
         >
           Next
-        </Button>
+        </button>
       </div>
     </div>
   );
