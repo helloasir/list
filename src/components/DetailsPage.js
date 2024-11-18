@@ -8,7 +8,7 @@ function DetailsPage({ data }) {
 
   if (!row) {
     return (
-      <div>
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
         <h1>Domain Not Found</h1>
         <Link to="/">Back to Home</Link>
       </div>
@@ -16,7 +16,7 @@ function DetailsPage({ data }) {
   }
 
   return (
-    <div>
+    <div style={{ textAlign: "center", padding: "20px" }}>
       <h1>Details for {domainName}</h1>
       <table>
         <tbody>
@@ -42,7 +42,9 @@ function DetailsPage({ data }) {
           </tr>
         </tbody>
       </table>
-      <Link to="/">Back to Home</Link>
+      <Link to="/" style={{ display: "block", marginTop: "20px", color: "#007bff" }}>
+        Back to Home
+      </Link>
     </div>
   );
 }

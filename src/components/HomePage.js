@@ -38,7 +38,7 @@ function HomePage({ data, currentPage, totalPages, paginate }) {
           <button
             key={number}
             onClick={() => paginate(number)}
-            disabled={number === currentPage}
+            className={number === currentPage ? "active" : ""}
           >
             {number}
           </button>
